@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NexLev Studio — Video Editing, Design & Branding Agency</title>
+<meta name="description" content="NexLev Studio: Video Editing, Logo Design, Graphic Design, Thumbnail Design & Account Management.">
+
+<!-- Bootstrap 5 -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+<!-- AOS scroll animation -->
+<link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+<!-- Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+:root{
+  --lime:#b6ff2e;
+  --lime-soft:#d9ff8f;
+  --lime-dim:#7ec21a;
+  --black:#050505;
+  --black-2:#0d0d0d;
+  --card:#111411;
+  --card-border:#232823;
+  --text:#eef0ea;
+  --muted:#8d958a;
+  --radius:18px;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--black);
+  color:var(--text);
+  font-family:'Inter',sans-serif;
+  overflow-x:hidden;
+  cursor:none;
+}
+::selection{background:var(--lime);color:#000;}
+h1,h2,h3,h4,.display-font{
+  font-family:'Space Grotesk',sans-serif;
+  letter-spacing:-0.02em;
+}
+.mega{
+  font-family:'Bebas Neue',sans-serif;
+  letter-spacing:0.02em;
+}
+a{text-decoration:none;color:inherit;}
+::-webkit-scrollbar{width:8px;}
+::-webkit-scrollbar-track{background:var(--black);}
+::-webkit-scrollbar-thumb{background:var(--lime-dim);border-radius:10px;}
+
+/* ---------- custom cursor ---------- */
+.cursor-dot, .cursor-ring{
+  position:fixed;top:0;left:0;pointer-events:none;z-index:9999;
+  transform:translate(-50%,-50%);
+  border-radius:50%;
+}
+.cursor-dot{width:8px;height:8px;background:var(--lime);box-shadow:0 0 12px var(--lime);}
+.cursor-ring{width:34px;height:34px;border:1.5px solid var(--lime-dim);transition:width .2s,height .2s,border-color .2s,transform .08s;}
+.cursor-ring.grow{width:60px;height:60px;background:rgba(182,255,46,.08);border-color:var(--lime);}
+@media (max-width:991px){.cursor-dot,.cursor-ring{display:none;}body{cursor:auto;}}
+
+/* ---------- background canvas ---------- */
+#bg-canvas{position:fixed;inset:0;z-index:0;opacity:.55;}
+
+/* ---------- noise overlay ---------- */
+.noise{
+  position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.035;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.container-xl-custom{position:relative;z-index:2;}
+
+/* ---------- navbar ---------- */
+.navbar-custom{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  padding:16px 0;
+  background:rgba(5,5,5,.55);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(182,255,46,.08);
+  transition:padding .3s, background .3s;
+}
+.navbar-custom.scrolled{padding:8px 0;background:rgba(5,5,5,.85);}
+.brand-logo{
+  font-family:'Space Grotesk';font-weight:700;font-size:1.5rem;color:#fff;
+  display:flex;align-items:center;gap:10px;
+}
+.brand-logo .dot{
+  width:12px;height:12px;background:var(--lime);border-radius:3px;
+  box-shadow:0 0 14px var(--lime);
+  animation:pulseDot 2s ease-in-out infinite;
+}
+@keyframes pulseDot{0%,100%{transform:scale(1);}50%{transform:scale(1.4) rotate(45deg);}}
+.nav-link-custom{
+  color:var(--muted)!important;font-weight:500;margin:0 14px;position:relative;
+  transition:color .3s;
+}
+.nav-link-custom::after{
+  content:'';position:absolute;bottom:-6px;left:0;width:0;height:2px;background:var(--lime);
+  transition:width .3s;box-shadow:0 0 8px var(--lime);
+}
+.nav-link-custom:hover{color:var(--lime)!important;}
+.nav-link-custom:hover::after{width:100%;}
+.btn-glow{
+  background:var(--lime);color:#000;font-weight:700;padding:10px 26px;border-radius:50px;
+  border:none;position:relative;overflow:hidden;transition:transform .3s, box-shadow .3s;
+  box-shadow:0 0 20px rgba(182,255,46,.35);
+}
+.btn-glow:hover{transform:translateY(-3px) scale(1.04);box-shadow:0 0 40px rgba(182,255,46,.7);color:#000;}
+.btn-glow::before{
+  content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;
+  background:linear-gradient(120deg,transparent,rgba(255,255,255,.5),transparent);
+  transition:left .6s;
+}
+.btn-glow:hover::before{left:100%;}
+.btn-outline-glow{
+  border:1.5px solid var(--lime-dim);color:var(--lime)!important;padding:9px 24px;border-radius:50px;
+  font-weight:600;transition:all .3s;
+}
+.btn-outline-glow:hover{background:var(--lime);color:#000!important;box-shadow:0 0 30px rgba(182,255,46,.5);}
+
+/* ---------- hero ---------- */
+.hero{
+  min-height:100vh;display:flex;align-items:center;position:relative;
+  padding-top:120px;padding-bottom:60px;
+  overflow:hidden;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  border:1px solid rgba(182,255,46,.3);background:rgba(182,255,46,.06);
+  padding:8px 18px;border-radius:50px;font-size:.85rem;color:var(--lime-soft);
+  margin-bottom:24px;
+}
+.hero-badge .blink{width:8px;height:8px;background:var(--lime);border-radius:50%;animation:blink 1.4s infinite;}
+@keyframes blink{0%,100%{opacity:1;box-shadow:0 0 10px var(--lime);}50%{opacity:.2;}}
+.hero h1{
+  font-size:clamp(2.6rem,7vw,5.8rem);
+  font-weight:700;color:#fff;line-height:1.02;margin-bottom:22px;
+}
+.hero h1 .outline-txt{
+  -webkit-text-stroke:1.5px var(--lime);color:transparent;
+}
+.hero h1 .fill-lime{
+  color:var(--lime);text-shadow:0 0 40px rgba(182,255,46,.5);
+}
+.hero p.lead-custom{
+  color:var(--muted);font-size:1.15rem;max-width:560px;margin-bottom:36px;
+}
+.typewriter-wrap{
+  font-family:'Space Grotesk';font-size:1.3rem;color:var(--lime);margin-bottom:30px;min-height:36px;
+}
+.typewriter-wrap::after{
+  content:'|';animation:blink 1s infinite;color:var(--lime);
+}
+.hero-stats{display:flex;gap:40px;margin-top:50px;flex-wrap:wrap;}
+.hero-stat h3{font-size:2.4rem;color:#fff;margin-bottom:0;font-weight:700;}
+.hero-stat span{color:var(--muted);font-size:.85rem;text-transform:uppercase;letter-spacing:.08em;}
+
+.hero-orb{
+  position:absolute;width:520px;height:520px;border-radius:50%;
+  background:radial-gradient(circle at 30% 30%, rgba(182,255,46,.35), transparent 70%);
+  filter:blur(40px);top:-100px;right:-150px;
+  animation:orbFloat 8s ease-in-out infinite;
+}
+@keyframes orbFloat{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(-30px,40px) scale(1.1);}}
+
+.floating-chip{
+  position:absolute;background:rgba(17,20,17,.8);border:1px solid var(--card-border);
+  backdrop-filter:blur(10px);border-radius:14px;padding:12px 18px;display:flex;align-items:center;gap:10px;
+  font-size:.85rem;font-weight:600;color:#fff;animation:floaty 5s ease-in-out infinite;
+  box-shadow:0 10px 30px rgba(0,0,0,.4);
+}
+.floating-chip i{color:var(--lime);}
+@keyframes floaty{0%,100%{transform:translateY(0);}50%{transform:translateY(-18px);}}
+
+/* ---------- marquee ---------- */
+.marquee-section{
+  background:var(--lime);padding:16px 0;overflow:hidden;position:relative;z-index:2;
+  transform:rotate(-1.2deg);margin:0 -10px;
+}
+.marquee-track{display:flex;white-space:nowrap;animation:marquee 22s linear infinite;}
+.marquee-track span{
+  color:#000;font-family:'Bebas Neue';font-size:1.8rem;margin-right:40px;display:flex;align-items:center;gap:16px;
+}
+@keyframes marquee{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+
+/* ---------- section common ---------- */
+.section{padding:120px 0;position:relative;z-index:2;}
+.eyebrow{
+  color:var(--lime);text-transform:uppercase;letter-spacing:.2em;font-size:.8rem;font-weight:700;
+  display:flex;align-items:center;gap:10px;margin-bottom:16px;
+}
+.eyebrow::before{content:'';width:30px;height:2px;background:var(--lime);}
+.section-title{font-size:clamp(2rem,4.5vw,3.4rem);font-weight:700;color:#fff;margin-bottom:20px;}
+.section-title .lime{color:var(--lime);}
+.section-sub{color:var(--muted);max-width:600px;font-size:1.05rem;}
+
+/* ---------- service cards ---------- */
+.service-card{
+  background:linear-gradient(160deg,var(--card),var(--black-2));
+  border:1px solid var(--card-border);border-radius:var(--radius);
+  padding:38px 30px;height:100%;position:relative;overflow:hidden;
+  transition:transform .45s cubic-bezier(.2,.8,.2,1), border-color .4s, box-shadow .4s;
+}
+.service-card::before{
+  content:'';position:absolute;inset:0;border-radius:var(--radius);padding:1px;
+  background:linear-gradient(140deg,rgba(182,255,46,0),rgba(182,255,46,.5));
+  opacity:0;transition:opacity .4s;
+  -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;
+}
+.service-card:hover{transform:translateY(-14px);border-color:rgba(182,255,46,.4);box-shadow:0 25px 60px rgba(0,0,0,.5),0 0 40px rgba(182,255,46,.12);}
+.service-card:hover::before{opacity:1;}
+.service-num{
+  position:absolute;top:20px;right:26px;font-family:'Bebas Neue';font-size:3.2rem;color:rgba(255,255,255,.05);
+}
+.service-icon{
+  width:64px;height:64px;border-radius:16px;background:rgba(182,255,46,.08);
+  display:flex;align-items:center;justify-content:center;font-size:1.6rem;color:var(--lime);
+  margin-bottom:26px;transition:transform .4s, background .4s;
+}
+.service-card:hover .service-icon{transform:rotate(-8deg) scale(1.1);background:var(--lime);color:#000;}
+.service-card h4{color:#fff;font-weight:700;margin-bottom:12px;}
+.service-card p{color:var(--muted);font-size:.95rem;margin-bottom:0;}
+.service-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;}
+.service-tags span{
+  font-size:.72rem;color:var(--lime-soft);border:1px solid rgba(182,255,46,.25);
+  padding:4px 10px;border-radius:20px;
+}
+
+/* ---------- process timeline ---------- */
+.process-line{
+  position:relative;
+}
+.process-step{
+  position:relative;padding-left:70px;padding-bottom:60px;
+}
+.process-step:last-child{padding-bottom:0;}
+.process-step::before{
+  content:'';position:absolute;left:22px;top:50px;bottom:0;width:2px;
+  background:linear-gradient(var(--lime-dim),transparent);
+}
+.process-step:last-child::before{display:none;}
+.process-badge{
+  position:absolute;left:0;top:0;width:46px;height:46px;border-radius:50%;
+  background:var(--black-2);border:2px solid var(--lime);display:flex;align-items:center;justify-content:center;
+  font-family:'Space Grotesk';font-weight:700;color:var(--lime);
+  box-shadow:0 0 20px rgba(182,255,46,.3);
+}
+.process-step h5{color:#fff;font-weight:700;margin-bottom:6px;}
+.process-step p{color:var(--muted);margin-bottom:0;}
+
+/* ---------- counters ---------- */
+.counter-box{text-align:center;padding:20px;}
+.counter-num{
+  font-family:'Bebas Neue';font-size:clamp(2.8rem,6vw,4.5rem);color:var(--lime);
+  text-shadow:0 0 30px rgba(182,255,46,.4);line-height:1;
+}
+.counter-label{color:var(--muted);text-transform:uppercase;letter-spacing:.1em;font-size:.8rem;margin-top:8px;}
+
+/* ---------- portfolio ---------- */
+.portfolio-item{
+  position:relative;border-radius:var(--radius);overflow:hidden;height:340px;
+  background:linear-gradient(160deg,#161a16,#0a0a0a);
+  border:1px solid var(--card-border);
+  display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;padding:26px;
+  transition:border-color .4s, transform .4s;
+}
+.portfolio-item:hover{border-color:rgba(182,255,46,.35);transform:translateY(-6px);}
+.portfolio-item .glow-blob{
+  position:absolute;width:220px;height:220px;border-radius:50%;
+  background:radial-gradient(circle, rgba(182,255,46,.35), transparent 70%);
+  filter:blur(20px);top:-60px;right:-60px;transition:transform .6s;
+}
+.portfolio-item:hover .glow-blob{transform:scale(1.4) translate(-20px,20px);}
+.portfolio-item::after{
+  content:'';position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(182,255,46,.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(182,255,46,.05) 1px, transparent 1px);
+  background-size:28px 28px;
+  -webkit-mask-image:radial-gradient(circle at 70% 35%, #000 0%, transparent 65%);
+  mask-image:radial-gradient(circle at 70% 35%, #000 0%, transparent 65%);
+  pointer-events:none;
+}
+.portfolio-bg-icon{
+  position:absolute;top:50%;right:-10px;transform:translateY(-50%);
+  font-size:9rem;color:rgba(182,255,46,.07);pointer-events:none;
+  transition:transform .5s, color .5s;
+}
+.portfolio-item:hover .portfolio-bg-icon{transform:translateY(-50%) scale(1.08) rotate(-4deg);color:rgba(182,255,46,.12);}
+.portfolio-overlay{position:relative;z-index:2;}
+.portfolio-overlay small{color:var(--lime);text-transform:uppercase;letter-spacing:.1em;font-size:.7rem;}
+.portfolio-overlay h5{color:#fff;font-weight:700;margin:6px 0 0;}
+.portfolio-item i.fa-arrow-up-right-from-square{
+  position:absolute;top:24px;right:24px;color:var(--lime);font-size:1.1rem;
+  transform:translate(-6px,6px);opacity:0;transition:all .35s;
+}
+.portfolio-item:hover i.fa-arrow-up-right-from-square{opacity:1;transform:translate(0,0);}
+.portfolio-icon{
+  position:relative;z-index:2;width:46px;height:46px;border-radius:12px;
+  background:rgba(182,255,46,.12);color:var(--lime);display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;margin-bottom:auto;transition:transform .4s, background .4s, color .4s;
+}
+.portfolio-item:hover .portfolio-icon{background:var(--lime);color:#000;transform:rotate(-6deg) scale(1.08);}
+.portfolio-stat{
+  display:inline-flex;align-items:center;gap:6px;color:var(--lime-soft);font-size:.78rem;font-weight:600;
+  margin-top:10px;
+}
+.portfolio-stat i{color:var(--lime);font-size:.75rem;}
+
+/* ---------- testimonials ---------- */
+.testi-card{
+  background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius);
+  padding:40px;max-width:760px;margin:0 auto;text-align:center;
+}
+.testi-card i.fa-quote-left{color:var(--lime);font-size:2rem;margin-bottom:20px;}
+.testi-card p{font-size:1.15rem;color:#e8e8e8;margin-bottom:26px;}
+.testi-avatar{width:56px;height:56px;border-radius:50%;background:var(--lime);display:flex;align-items:center;justify-content:center;font-weight:700;color:#000;margin:0 auto 12px;}
+.carousel-indicators [data-bs-target]{background:var(--lime-dim);}
+
+/* ---------- pricing / CTA banner ---------- */
+.cta-banner{
+  background:linear-gradient(120deg,#0d1207,#0a0a0a 60%);
+  border:1px solid rgba(182,255,46,.25);
+  border-radius:28px;padding:70px 40px;position:relative;overflow:hidden;text-align:center;
+}
+.cta-banner::before{
+  content:'';position:absolute;width:400px;height:400px;background:radial-gradient(circle,rgba(182,255,46,.25),transparent 70%);
+  top:-150px;left:-100px;filter:blur(20px);animation:orbFloat 10s ease-in-out infinite;
+}
+.cta-banner h2{color:#fff;font-weight:700;font-size:clamp(1.8rem,4vw,3rem);position:relative;z-index:2;}
+.cta-banner p{color:var(--muted);position:relative;z-index:2;}
+
+/* ---------- contact ---------- */
+.contact-card{
+  background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius);padding:16px;
+}
+.form-control-custom{
+  background:var(--black-2)!important;border:1px solid var(--card-border)!important;color:#fff!important;
+  padding:14px 16px;border-radius:12px;
+}
+.form-control-custom:focus{
+  border-color:var(--lime)!important;box-shadow:0 0 0 4px rgba(182,255,46,.12)!important;outline:none;
+}
+.form-control-custom::placeholder{color:var(--muted);}
+.contact-info-item{
+  display:flex;align-items:center;gap:16px;padding:20px;border-radius:14px;
+  background:var(--black-2);border:1px solid var(--card-border);margin-bottom:16px;transition:border-color .3s, transform .3s;
+}
+.contact-info-item:hover{border-color:var(--lime);transform:translateX(6px);}
+.contact-info-item .icon-box{
+  width:50px;height:50px;border-radius:12px;background:rgba(182,255,46,.1);color:var(--lime);
+  display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;
+}
+.contact-info-item small{color:var(--muted);text-transform:uppercase;font-size:.7rem;letter-spacing:.08em;}
+.contact-info-item strong{color:#fff;display:block;font-size:1rem;}
+
+/* ---------- footer ---------- */
+footer{
+  background:var(--black-2);border-top:1px solid rgba(182,255,46,.08);padding:60px 0 24px;position:relative;z-index:2;
+}
+.footer-brand{font-family:'Space Grotesk';font-weight:700;font-size:1.6rem;color:#fff;}
+.social-icon{
+  width:42px;height:42px;border-radius:50%;border:1px solid var(--card-border);
+  display:flex;align-items:center;justify-content:center;color:var(--muted);transition:all .3s;
+}
+.social-icon:hover{background:var(--lime);color:#000;border-color:var(--lime);transform:translateY(-4px);}
+.footer-links a{color:var(--muted);display:block;margin-bottom:10px;transition:color .3s, padding-left .3s;}
+.footer-links a:hover{color:var(--lime);padding-left:6px;}
+
+/* ---------- reveal fallback ---------- */
+[data-aos]{transition-timing-function:cubic-bezier(.2,.8,.2,1)!important;}
+
+/* ---------- back to top ---------- */
+#backToTop{
+  position:fixed;bottom:30px;right:30px;width:52px;height:52px;border-radius:50%;
+  background:var(--lime);color:#000;display:flex;align-items:center;justify-content:center;
+  z-index:900;opacity:0;pointer-events:none;transition:opacity .3s, transform .3s;
+  box-shadow:0 0 25px rgba(182,255,46,.5);
+}
+#backToTop.show{opacity:1;pointer-events:auto;}
+#backToTop:hover{transform:translateY(-6px);}
+
+@media(max-width:767px){
+  .hero-stats{gap:24px;}
+  .floating-chip{display:none;}
+  .section{padding:80px 0;}
+}
+
+/* ---------- work modals ---------- */
+.portfolio-item{cursor:pointer;}
+.modal-backdrop.show{opacity:.75;}
+.work-modal-content{
+  background:linear-gradient(160deg,var(--card),var(--black-2));
+  border:1px solid rgba(182,255,46,.25);border-radius:24px;
+  padding:50px 45px;position:relative;color:var(--text);
+  box-shadow:0 30px 80px rgba(0,0,0,.6);
+}
+.work-modal-content .btn-close{
+  position:absolute;top:22px;right:22px;opacity:.8;
+}
+.work-modal-icon{
+  width:64px;height:64px;border-radius:16px;background:rgba(182,255,46,.1);color:var(--lime);
+  display:flex;align-items:center;justify-content:center;font-size:1.6rem;margin-bottom:20px;
+}
+.work-modal-cat{
+  color:var(--lime);text-transform:uppercase;letter-spacing:.15em;font-size:.75rem;font-weight:700;
+}
+.work-modal-content h3{color:#fff;font-weight:700;margin:8px 0 18px;font-size:1.8rem;}
+.work-modal-content p{color:var(--muted);font-size:1rem;line-height:1.7;margin-bottom:24px;}
+.work-modal-results{display:flex;flex-direction:column;gap:12px;}
+.work-modal-results div{
+  display:flex;align-items:center;gap:12px;background:var(--black-2);
+  border:1px solid var(--card-border);padding:12px 16px;border-radius:12px;
+  font-size:.9rem;color:#e8e8e8;
+}
+.work-modal-results div i{color:var(--lime);width:18px;text-align:center;}
+@media(max-width:576px){.work-modal-content{padding:36px 24px;}}
+</style>
+</head>
+<body>
+
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<canvas id="bg-canvas"></canvas>
+<div class="noise"></div>
+
+<!-- ================= NAVBAR ================= -->
+<nav class="navbar navbar-expand-lg navbar-custom" id="mainNav">
+  <div class="container">
+    <a class="brand-logo" href="#home"><span class="dot"></span>NexLev<span style="color:var(--lime)">Studio</span></a>
+    <button class="navbar-toggler border-0 text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+      <i class="fa-solid fa-bars fa-lg" style="color:var(--lime)"></i>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navMenu">
+      <ul class="navbar-nav align-items-lg-center gap-lg-2">
+        <li class="nav-item"><a class="nav-link nav-link-custom" href="#home">Home</a></li>
+        <li class="nav-item"><a class="nav-link nav-link-custom" href="#services">Services</a></li>
+        <li class="nav-item"><a class="nav-link nav-link-custom" href="#work">Work</a></li>
+        <li class="nav-item"><a class="nav-link nav-link-custom" href="#process">Process</a></li>
+        <li class="nav-item"><a class="nav-link nav-link-custom" href="#testimonials">Reviews</a></li>
+        <li class="nav-item mt-3 mt-lg-0 ms-lg-3"><a class="btn btn-glow" href="#contact">Start a Project</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- ================= HERO ================= -->
+<section class="hero" id="home">
+  <div class="hero-orb"></div>
+
+  <div class="floating-chip" style="top:22%;left:6%;" data-aos="fade-down" data-aos-delay="600">
+    <i class="fa-solid fa-video"></i> Video Editing
+  </div>
+  <div class="floating-chip" style="top:65%;left:3%;animation-delay:1.2s;" data-aos="fade-up" data-aos-delay="900">
+    <i class="fa-solid fa-palette"></i> Graphic Design
+  </div>
+  <div class="floating-chip" style="top:18%;right:5%;animation-delay:.6s;" data-aos="fade-down" data-aos-delay="1100">
+    <i class="fa-solid fa-image"></i> Thumbnails
+  </div>
+  <div class="floating-chip" style="top:70%;right:7%;animation-delay:1.8s;" data-aos="fade-up" data-aos-delay="1300">
+    <i class="fa-solid fa-user-shield"></i> Account Mgmt
+  </div>
+
+  <div class="container container-xl-custom">
+    <div class="row justify-content-center text-center">
+      <div class="col-lg-9">
+        <div class="hero-badge" data-aos="fade-up">
+          <span class="blink"></span> Now booking new clients — NexLev Studio
+        </div>
+        <h1 data-aos="fade-up" data-aos-delay="100">
+          We Build <span class="fill-lime">Scroll-Stopping</span><br>
+          <span class="outline-txt">Visuals & Videos</span>
+        </h1>
+        <div class="typewriter-wrap" id="typewriter" data-aos="fade-up" data-aos-delay="200"></div>
+        <p class="lead-custom mx-auto" data-aos="fade-up" data-aos-delay="300">
+          NexLev Studio helps brands, creators & businesses stand out with cinematic video editing,
+          sharp logo & graphic design, thumb-stopping thumbnails, and reliable account management —
+          all under one roof.
+        </p>
+        <div class="d-flex gap-3 justify-content-center flex-wrap" data-aos="fade-up" data-aos-delay="400">
+          <a href="#contact" class="btn btn-glow">Get Your Free Quote <i class="fa-solid fa-arrow-right ms-1"></i></a>
+          <a href="#work" class="btn btn-outline-glow">See Our Work</a>
+        </div>
+
+        <div class="hero-stats justify-content-center" data-aos="fade-up" data-aos-delay="500">
+          <div class="hero-stat">
+            <h3><span class="counter" data-target="250">0</span>+</h3>
+            <span>Projects Delivered</span>
+          </div>
+          <div class="hero-stat">
+            <h3><span class="counter" data-target="120">0</span>+</h3>
+            <span>Happy Clients</span>
+          </div>
+          <div class="hero-stat">
+            <h3><span class="counter" data-target="5">0</span></h3>
+            <span>Core Services</span>
+          </div>
+          <div class="hero-stat">
+            <h3><span class="counter" data-target="24">0</span>/7</h3>
+            <span>Support</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</section>
+
+<!-- ================= MARQUEE ================= -->
+<div class="marquee-section">
+  <div class="marquee-track">
+    <span><i class="fa-solid fa-star"></i> VIDEO EDITING</span>
+    <span><i class="fa-solid fa-star"></i> LOGO DESIGN</span>
+    <span><i class="fa-solid fa-star"></i> GRAPHIC DESIGN</span>
+    <span><i class="fa-solid fa-star"></i> THUMBNAIL DESIGN</span>
+    <span><i class="fa-solid fa-star"></i> ACCOUNT MANAGEMENT</span>
+    <span><i class="fa-solid fa-star"></i> VIDEO EDITING</span>
+    <span><i class="fa-solid fa-star"></i> LOGO DESIGN</span>
+    <span><i class="fa-solid fa-star"></i> GRAPHIC DESIGN</span>
+    <span><i class="fa-solid fa-star"></i> THUMBNAIL DESIGN</span>
+    <span><i class="fa-solid fa-star"></i> ACCOUNT MANAGEMENT</span>
+  </div>
+</div>
+
+<!-- ================= SERVICES ================= -->
+<section class="section" id="services">
+  <div class="container">
+    <div class="row mb-5">
+      <div class="col-lg-7" data-aos="fade-up">
+        <div class="eyebrow">What We Do</div>
+        <h2 class="section-title">Services built for <span class="lime">real growth</span>, not just good looks.</h2>
+        <p class="section-sub">Every deliverable is designed to get results — more views, more clicks, more sales.</p>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="0">
+        <div class="service-card">
+          <div class="service-num">01</div>
+          <div class="service-icon"><i class="fa-solid fa-film"></i></div>
+          <h4>Video Editing</h4>
+          <p>Cinematic cuts, motion graphics, sound design & color grading for YouTube, Reels, TikTok and ads that keep viewers watching till the end.</p>
+          <div class="service-tags"><span>YouTube</span><span>Reels</span><span>Ads</span></div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100">
+        <div class="service-card">
+          <div class="service-num">02</div>
+          <div class="service-icon"><i class="fa-solid fa-bezier-curve"></i></div>
+          <h4>Logo Design</h4>
+          <p>Unique, memorable, vector-perfect logos that give your brand a strong identity across every platform and product.</p>
+          <div class="service-tags"><span>Branding</span><span>Vector</span><span>Identity</span></div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200">
+        <div class="service-card">
+          <div class="service-num">03</div>
+          <div class="service-icon"><i class="fa-solid fa-swatchbook"></i></div>
+          <h4>Graphic Design</h4>
+          <p>Social posts, banners, posters, brand kits & marketing creatives crafted to match your brand voice perfectly.</p>
+          <div class="service-tags"><span>Social Media</span><span>Print</span><span>Banners</span></div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="0">
+        <div class="service-card">
+          <div class="service-num">04</div>
+          <div class="service-icon"><i class="fa-solid fa-image-portrait"></i></div>
+          <h4>Thumbnail Design</h4>
+          <p>High-CTR thumbnails engineered with proven design psychology to boost your click-through rate and views.</p>
+          <div class="service-tags"><span>CTR Focused</span><span>YouTube</span><span>Bold Design</span></div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100">
+        <div class="service-card">
+          <div class="service-num">05</div>
+          <div class="service-icon"><i class="fa-solid fa-user-shield"></i></div>
+          <h4>Account Management</h4>
+          <p>Full channel & social account handling — uploads, scheduling, optimization & growth strategy, done for you.</p>
+          <div class="service-tags"><span>Growth</span><span>Scheduling</span><span>SEO</span></div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200">
+        <div class="service-card" style="display:flex;flex-direction:column;justify-content:center;align-items:flex-start;background:linear-gradient(160deg,rgba(182,255,46,.1),var(--black-2));border-color:rgba(182,255,46,.35);">
+          <h4 style="font-size:1.6rem;">Don't see what<br>you need?</h4>
+          <p>We tailor custom packages for every client & budget.</p>
+          <a href="#contact" class="btn btn-glow mt-2">Let's Talk <i class="fa-solid fa-arrow-right ms-1"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= COUNTERS STRIP ================= -->
+<section class="section pt-0" id="stats">
+  <div class="container">
+    <div class="row g-4 py-4" style="border-top:1px solid var(--card-border);border-bottom:1px solid var(--card-border);">
+      <div class="col-6 col-md-3 counter-box" data-aos="zoom-in">
+        <div class="counter-num"><span class="counter" data-target="250">0</span>+</div>
+        <div class="counter-label">Projects</div>
+      </div>
+      <div class="col-6 col-md-3 counter-box" data-aos="zoom-in" data-aos-delay="100">
+        <div class="counter-num"><span class="counter" data-target="120">0</span>+</div>
+        <div class="counter-label">Clients</div>
+      </div>
+      <div class="col-6 col-md-3 counter-box" data-aos="zoom-in" data-aos-delay="200">
+        <div class="counter-num"><span class="counter" data-target="98">0</span>%</div>
+        <div class="counter-label">Satisfaction</div>
+      </div>
+      <div class="col-6 col-md-3 counter-box" data-aos="zoom-in" data-aos-delay="300">
+        <div class="counter-num"><span class="counter" data-target="3">0</span>+</div>
+        <div class="counter-label">Years Experience</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PROCESS ================= -->
+<section class="section" id="process">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6" data-aos="fade-up">
+        <div class="eyebrow">How It Works</div>
+        <h2 class="section-title">From idea to <span class="lime">delivery</span> in 4 simple steps.</h2>
+        <p class="section-sub mb-5">No confusion, no delays — just a clear, transparent process.</p>
+
+        <div class="process-line">
+          <div class="process-step" data-aos="fade-up">
+            <div class="process-badge">1</div>
+            <h5>Share Your Vision</h5>
+            <p>Tell us your goals, brand style & reference — via call, WhatsApp or email.</p>
+          </div>
+          <div class="process-step" data-aos="fade-up" data-aos-delay="100">
+            <div class="process-badge">2</div>
+            <h5>We Design & Edit</h5>
+            <p>Our team crafts your video, logo, or graphic with pixel-perfect precision.</p>
+          </div>
+          <div class="process-step" data-aos="fade-up" data-aos-delay="200">
+            <div class="process-badge">3</div>
+            <h5>Review & Revise</h5>
+            <p>You get drafts fast, and we refine until it matches your vision exactly.</p>
+          </div>
+          <div class="process-step" data-aos="fade-up" data-aos-delay="300">
+            <div class="process-badge">4</div>
+            <h5>Final Delivery</h5>
+            <p>Receive final files in every format you need, ready to publish.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6 d-flex align-items-center" data-aos="fade-left">
+        <div class="w-100">
+          <div class="cta-banner">
+            <i class="fa-solid fa-bolt fa-2x mb-3" style="color:var(--lime);position:relative;z-index:2;"></i>
+            <h2>Ready to level up<br>your brand?</h2>
+            <p class="mb-4">Join 120+ brands already growing with NexLev Studio.</p>
+            <a href="#contact" class="btn btn-glow position-relative" style="z-index:2;">Book a Free Call</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PORTFOLIO ================= -->
+<section class="section" id="work">
+  <div class="container">
+    <div class="row mb-5">
+      <div class="col-lg-7" data-aos="fade-up">
+        <div class="eyebrow">Our Work</div>
+        <h2 class="section-title">A glimpse of what we <span class="lime">create</span>.</h2>
+        <p class="section-sub">A sample of recent projects across video, branding & design.</p>
+      </div>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-4" data-aos="fade-up">
+        <div class="portfolio-item" role="button" data-bs-toggle="modal" data-bs-target="#work1">
+          <div class="glow-blob"></div>
+          <i class="fa-solid fa-arrow-up-right-from-square"></i>
+          <i class="fa-solid fa-film portfolio-bg-icon"></i>
+          <div class="portfolio-icon"><i class="fa-solid fa-film"></i></div>
+          <div class="portfolio-overlay">
+            <small>Video Editing</small>
+            <h5>Cinematic Travel Vlog Series</h5>
+            <div class="portfolio-stat"><i class="fa-solid fa-arrow-trend-up"></i> 2.1M+ total views</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100">
+        <div class="portfolio-item" role="button" data-bs-toggle="modal" data-bs-target="#work2">
+          <div class="glow-blob"></div>
+          <i class="fa-solid fa-arrow-up-right-from-square"></i>
+          <i class="fa-solid fa-bezier-curve portfolio-bg-icon"></i>
+          <div class="portfolio-icon"><i class="fa-solid fa-bezier-curve"></i></div>
+          <div class="portfolio-overlay">
+            <small>Logo Design</small>
+            <h5>Modern Tech Startup Identity</h5>
+            <div class="portfolio-stat"><i class="fa-solid fa-swatchbook"></i> Full brand kit delivered</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200">
+        <div class="portfolio-item" role="button" data-bs-toggle="modal" data-bs-target="#work3">
+          <div class="glow-blob"></div>
+          <i class="fa-solid fa-arrow-up-right-from-square"></i>
+          <i class="fa-solid fa-image-portrait portfolio-bg-icon"></i>
+          <div class="portfolio-icon"><i class="fa-solid fa-image-portrait"></i></div>
+          <div class="portfolio-overlay">
+            <small>Thumbnail Design</small>
+            <h5>High-CTR Gaming Thumbnails</h5>
+            <div class="portfolio-stat"><i class="fa-solid fa-arrow-trend-up"></i> +186% click-through rate</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4" data-aos="fade-up">
+        <div class="portfolio-item" role="button" data-bs-toggle="modal" data-bs-target="#work4">
+          <div class="glow-blob"></div>
+          <i class="fa-solid fa-arrow-up-right-from-square"></i>
+          <i class="fa-solid fa-swatchbook portfolio-bg-icon"></i>
+          <div class="portfolio-icon"><i class="fa-solid fa-swatchbook"></i></div>
+          <div class="portfolio-overlay">
+            <small>Graphic Design</small>
+            <h5>E-commerce Social Media Kit</h5>
+            <div class="portfolio-stat"><i class="fa-solid fa-layer-group"></i> 40+ creatives, one brand kit</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100">
+        <div class="portfolio-item" role="button" data-bs-toggle="modal" data-bs-target="#work5">
+          <div class="glow-blob"></div>
+          <i class="fa-solid fa-arrow-up-right-from-square"></i>
+          <i class="fa-solid fa-user-shield portfolio-bg-icon"></i>
+          <div class="portfolio-icon"><i class="fa-solid fa-user-shield"></i></div>
+          <div class="portfolio-overlay">
+            <small>Account Management</small>
+            <h5>YouTube Channel Growth</h5>
+            <div class="portfolio-stat"><i class="fa-solid fa-arrow-trend-up"></i> 0 to 50K subscribers</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200">
+        <div class="portfolio-item" role="button" data-bs-toggle="modal" data-bs-target="#work6">
+          <div class="glow-blob"></div>
+          <i class="fa-solid fa-arrow-up-right-from-square"></i>
+          <i class="fa-solid fa-clapperboard portfolio-bg-icon"></i>
+          <div class="portfolio-icon"><i class="fa-solid fa-clapperboard"></i></div>
+          <div class="portfolio-overlay">
+            <small>Video Editing</small>
+            <h5>Brand Promo & Ad Film</h5>
+            <div class="portfolio-stat"><i class="fa-solid fa-bullhorn"></i> Launched across 3 platforms</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= WORK MODALS ================= -->
+<div class="modal fade" id="work1" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content work-modal-content">
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      <div class="work-modal-icon"><i class="fa-solid fa-film"></i></div>
+      <small class="work-modal-cat">Video Editing</small>
+      <h3>Cinematic Travel Vlog Series</h3>
+      <p>A weekly travel vlog channel came to us with raw, unedited footage and no consistent style. We built a cinematic editing template — color grading, sound design, pacing and motion titles — and applied it across every episode.</p>
+      <div class="work-modal-results">
+        <div><i class="fa-solid fa-arrow-trend-up"></i> 2.1M+ total views across the series</div>
+        <div><i class="fa-solid fa-clock"></i> Avg. watch time up by 46%</div>
+        <div><i class="fa-solid fa-repeat"></i> Weekly turnaround, zero missed deadlines</div>
+      </div>
+      <a href="#contact" data-bs-dismiss="modal" class="btn btn-glow mt-4">Start a Similar Project</a>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="work2" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content work-modal-content">
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      <div class="work-modal-icon"><i class="fa-solid fa-bezier-curve"></i></div>
+      <small class="work-modal-cat">Logo Design</small>
+      <h3>Modern Tech Startup Identity</h3>
+      <p>A SaaS startup needed a logo that felt modern, trustworthy and scalable across app icons, web and print. We delivered a vector wordmark, icon lockup, color system and usage guidelines as one complete identity.</p>
+      <div class="work-modal-results">
+        <div><i class="fa-solid fa-swatchbook"></i> Full brand kit: logo, colors, typography</div>
+        <div><i class="fa-solid fa-shapes"></i> Icon + wordmark + favicon variants</div>
+        <div><i class="fa-solid fa-file-export"></i> Delivered in SVG, PNG & PDF formats</div>
+      </div>
+      <a href="#contact" data-bs-dismiss="modal" class="btn btn-glow mt-4">Start a Similar Project</a>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="work3" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content work-modal-content">
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      <div class="work-modal-icon"><i class="fa-solid fa-image-portrait"></i></div>
+      <small class="work-modal-cat">Thumbnail Design</small>
+      <h3>High-CTR Gaming Thumbnails</h3>
+      <p>A gaming channel was struggling with low click-through rate despite good content. We redesigned their thumbnail system using bold typography, high-contrast colors and expressive close-up framing.</p>
+      <div class="work-modal-results">
+        <div><i class="fa-solid fa-arrow-trend-up"></i> +186% click-through rate</div>
+        <div><i class="fa-solid fa-palette"></i> Consistent, recognizable thumbnail style</div>
+        <div><i class="fa-solid fa-bolt"></i> 24-48 hour delivery per thumbnail</div>
+      </div>
+      <a href="#contact" data-bs-dismiss="modal" class="btn btn-glow mt-4">Start a Similar Project</a>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="work4" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content work-modal-content">
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      <div class="work-modal-icon"><i class="fa-solid fa-swatchbook"></i></div>
+      <small class="work-modal-cat">Graphic Design</small>
+      <h3>E-commerce Social Media Kit</h3>
+      <p>An online store needed a full month of scroll-stopping social creatives — product posts, promo banners, story templates — all matching one cohesive brand look.</p>
+      <div class="work-modal-results">
+        <div><i class="fa-solid fa-layer-group"></i> 40+ creatives delivered in one brand kit</div>
+        <div><i class="fa-solid fa-cart-shopping"></i> Used across Instagram, Facebook & ads</div>
+        <div><i class="fa-solid fa-swatchbook"></i> Reusable templates for future posts</div>
+      </div>
+      <a href="#contact" data-bs-dismiss="modal" class="btn btn-glow mt-4">Start a Similar Project</a>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="work5" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content work-modal-content">
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      <div class="work-modal-icon"><i class="fa-solid fa-user-shield"></i></div>
+      <small class="work-modal-cat">Account Management</small>
+      <h3>YouTube Channel Growth</h3>
+      <p>We took over full channel management for a creator with zero subscribers — uploads, scheduling, SEO, thumbnails and community replies — so they could focus purely on filming.</p>
+      <div class="work-modal-results">
+        <div><i class="fa-solid fa-arrow-trend-up"></i> Grew from 0 to 50K subscribers</div>
+        <div><i class="fa-solid fa-calendar-check"></i> Consistent 3x/week upload schedule</div>
+        <div><i class="fa-solid fa-magnifying-glass"></i> SEO-optimized titles, tags & descriptions</div>
+      </div>
+      <a href="#contact" data-bs-dismiss="modal" class="btn btn-glow mt-4">Start a Similar Project</a>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="work6" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content work-modal-content">
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      <div class="work-modal-icon"><i class="fa-solid fa-clapperboard"></i></div>
+      <small class="work-modal-cat">Video Editing</small>
+      <h3>Brand Promo & Ad Film</h3>
+      <p>A local business needed a punchy promo film for launch day. We handled scripting-to-edit turnaround — motion graphics, voiceover sync and platform-specific cuts for YouTube, Instagram and TikTok.</p>
+      <div class="work-modal-results">
+        <div><i class="fa-solid fa-bullhorn"></i> Launched across 3 platforms simultaneously</div>
+        <div><i class="fa-solid fa-crop-simple"></i> Custom aspect ratios per platform</div>
+        <div><i class="fa-solid fa-clock"></i> Delivered in under 5 days</div>
+      </div>
+      <a href="#contact" data-bs-dismiss="modal" class="btn btn-glow mt-4">Start a Similar Project</a>
+    </div>
+  </div>
+</div>
+
+<!-- ================= TESTIMONIALS ================= -->
+<section class="section" id="testimonials">
+  <div class="container">
+    <div class="text-center mb-5" data-aos="fade-up">
+      <div class="eyebrow justify-content-center">Testimonials</div>
+      <h2 class="section-title">Clients who <span class="lime">trust us</span>.</h2>
+    </div>
+
+    <div id="testiCarousel" class="carousel slide" data-bs-ride="carousel" data-aos="zoom-in">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <div class="testi-card">
+            <i class="fa-solid fa-quote-left"></i>
+            <p>"NexLev Studio completely transformed our channel's thumbnails and editing style. Our click-through rate and watch time both jumped within weeks."</p>
+            <div class="testi-avatar">A</div>
+            <strong style="color:#fff;">Ahmed Raza</strong>
+            <div class="text-muted small">YouTube Creator</div>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <div class="testi-card">
+            <i class="fa-solid fa-quote-left"></i>
+            <p>"Professional, fast, and genuinely creative. The logo and brand kit they designed made our startup look ten times more established."</p>
+            <div class="testi-avatar">S</div>
+            <strong style="color:#fff;">Sara Khan</strong>
+            <div class="text-muted small">Founder, Startup</div>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <div class="testi-card">
+            <i class="fa-solid fa-quote-left"></i>
+            <p>"Their account management team handles everything — I just focus on content while they handle uploads, scheduling & growth."</p>
+            <div class="testi-avatar">B</div>
+            <strong style="color:#fff;">Bilal Ahmed</strong>
+            <div class="text-muted small">Content Creator</div>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-indicators position-static mt-4">
+        <button type="button" data-bs-target="#testiCarousel" data-bs-slide-to="0" class="active"></button>
+        <button type="button" data-bs-target="#testiCarousel" data-bs-slide-to="1"></button>
+        <button type="button" data-bs-target="#testiCarousel" data-bs-slide-to="2"></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section class="section" id="contact">
+  <div class="container">
+    <div class="row g-5">
+      <div class="col-lg-5" data-aos="fade-up">
+        <div class="eyebrow">Get In Touch</div>
+        <h2 class="section-title">Let's start your <span class="lime">next project</span>.</h2>
+        <p class="section-sub mb-4">Tell us about your project and we'll get back to you within a few hours.</p>
+
+        <div class="contact-info-item">
+          <div class="icon-box"><i class="fa-solid fa-phone"></i></div>
+          <div><small>Call / WhatsApp</small><strong>0337 1274309</strong></div>
+        </div>
+        <div class="contact-info-item">
+          <div class="icon-box"><i class="fa-solid fa-envelope"></i></div>
+          <div><small>Email</small><strong>mazharfareed606@gmail.com</strong></div>
+        </div>
+        <div class="contact-info-item">
+          <div class="icon-box"><i class="fa-solid fa-location-dot"></i></div>
+          <div><small>Studio</small><strong>NexLev Studio — Pakistan</strong></div>
+        </div>
+
+        <div class="d-flex gap-3 mt-4">
+          <a href="https://wa.me/923371274309" target="_blank" rel="noopener" class="social-icon"><i class="fa-brands fa-whatsapp"></i></a>
+          <a href="https://www.instagram.com/proeditor_321/" target="_blank" rel="noopener" class="social-icon"><i class="fa-brands fa-instagram"></i></a>
+          <a href="https://x.com/proeditor_321" target="_blank" rel="noopener" class="social-icon"><i class="fa-brands fa-x-twitter"></i></a>
+          <a href="https://www.threads.com/@proeditor_321" target="_blank" rel="noopener" class="social-icon"><i class="fa-brands fa-threads"></i></a>
+        </div>
+      </div>
+
+      <div class="col-lg-7" data-aos="fade-up" data-aos-delay="150">
+        <div class="contact-card">
+          <form id="contactForm" class="p-3 p-md-4" action="https://formspree.io/f/xlgyzryz" method="POST">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label text-muted small">Full Name</label>
+                <input type="text" name="name" class="form-control form-control-custom" placeholder="Your name" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label text-muted small">Email</label>
+                <input type="email" name="email" class="form-control form-control-custom" placeholder="you@email.com" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label text-muted small">Phone / WhatsApp</label>
+                <input type="text" name="phone" class="form-control form-control-custom" placeholder="03xx xxxxxxx" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label text-muted small">Service Needed</label>
+                <select name="service" class="form-select form-control-custom">
+                  <option>Video Editing</option>
+                  <option>Logo Design</option>
+                  <option>Graphic Design</option>
+                  <option>Thumbnail Design</option>
+                  <option>Account Management</option>
+                  <option>Something Else</option>
+                </select>
+              </div>
+              <div class="col-12">
+                <label class="form-label text-muted small">Project Details (Optional)</label>
+                <textarea name="message" class="form-control form-control-custom" rows="5" placeholder="Tell us about your project..."></textarea>
+              </div>
+              <div class="col-12">
+                <button type="submit" class="btn btn-glow w-100 py-3">Send Message <i class="fa-solid fa-paper-plane ms-2"></i></button>
+              </div>
+              <div class="col-12">
+                <div id="formSuccess" class="text-center small mt-2" style="color:var(--lime);display:none;">
+                  <i class="fa-solid fa-circle-check"></i> Thanks! We received your message and will reply soon.
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-lg-4">
+        <div class="footer-brand mb-3"><span style="color:var(--lime)">●</span> NexLev Studio</div>
+        <p class="text-muted small">Video editing, branding & design studio helping creators and businesses grow with scroll-stopping visuals.</p>
+      </div>
+      <div class="col-6 col-lg-2">
+        <h6 class="text-white mb-3">Services</h6>
+        <div class="footer-links small">
+          <a href="#services">Video Editing</a>
+          <a href="#services">Logo Design</a>
+          <a href="#services">Graphic Design</a>
+          <a href="#services">Thumbnails</a>
+        </div>
+      </div>
+      <div class="col-6 col-lg-2">
+        <h6 class="text-white mb-3">Company</h6>
+        <div class="footer-links small">
+          <a href="#home">Home</a>
+          <a href="#work">Work</a>
+          <a href="#process">Process</a>
+          <a href="#contact">Contact</a>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <h6 class="text-white mb-3">Contact</h6>
+        <p class="text-muted small mb-1"><i class="fa-solid fa-phone me-2" style="color:var(--lime)"></i>0337 1274309</p>
+        <p class="text-muted small"><i class="fa-solid fa-envelope me-2" style="color:var(--lime)"></i>mazharfareed606@gmail.com</p>
+      </div>
+    </div>
+    <hr style="border-color:var(--card-border);margin:40px 0 20px;">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
+      <small class="text-muted">© <span id="year"></span> NexLev Studio. All rights reserved.</small>
+      <small class="text-muted">Designed & built with <i class="fa-solid fa-heart" style="color:var(--lime)"></i> by Abdullah Ansari</small>
+    </div>
+  </div>
+</footer>
+
+<div id="backToTop"><i class="fa-solid fa-arrow-up"></i></div>
+
+<!-- ================= SCRIPTS ================= -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+<script>
+AOS.init({duration:900, once:true, easing:'ease-out-cubic'});
+document.getElementById('year').textContent = new Date().getFullYear();
+
+/* ---------- custom cursor ---------- */
+const dot = document.getElementById('cursorDot');
+const ring = document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+window.addEventListener('mousemove', e=>{
+  mx=e.clientX; my=e.clientY;
+  dot.style.left=mx+'px'; dot.style.top=my+'px';
+});
+function animRing(){
+  rx += (mx-rx)*0.15; ry += (my-ry)*0.15;
+  ring.style.left=rx+'px'; ring.style.top=ry+'px';
+  requestAnimationFrame(animRing);
+}
+animRing();
+document.querySelectorAll('a, button, .service-card, .portfolio-item, input, textarea, select').forEach(el=>{
+  el.addEventListener('mouseenter', ()=>ring.classList.add('grow'));
+  el.addEventListener('mouseleave', ()=>ring.classList.remove('grow'));
+});
+
+/* ---------- navbar scroll state ---------- */
+const nav = document.getElementById('mainNav');
+window.addEventListener('scroll', ()=>{
+  nav.classList.toggle('scrolled', window.scrollY>40);
+  document.getElementById('backToTop').classList.toggle('show', window.scrollY>500);
+});
+
+/* ---------- back to top ---------- */
+document.getElementById('backToTop').addEventListener('click', ()=>{
+  window.scrollTo({top:0, behavior:'smooth'});
+});
+
+/* ---------- typewriter ---------- */
+const words = ["Video Editing.", "Logo Design.", "Graphic Design.", "Thumbnail Design.", "Account Management."];
+let wIndex=0, cIndex=0, deleting=false;
+const twEl = document.getElementById('typewriter');
+function typeLoop(){
+  const current = words[wIndex];
+  if(!deleting){
+    cIndex++;
+    twEl.textContent = current.substring(0,cIndex);
+    if(cIndex===current.length){ deleting=true; setTimeout(typeLoop,1400); return; }
+  } else {
+    cIndex--;
+    twEl.textContent = current.substring(0,cIndex);
+    if(cIndex===0){ deleting=false; wIndex=(wIndex+1)%words.length; }
+  }
+  setTimeout(typeLoop, deleting?40:80);
+}
+typeLoop();
+
+/* ---------- counters ---------- */
+const counters = document.querySelectorAll('.counter');
+const counterObserver = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      const el = entry.target;
+      const target = +el.dataset.target;
+      let cur = 0;
+      const step = Math.max(1, Math.ceil(target/60));
+      const timer = setInterval(()=>{
+        cur += step;
+        if(cur>=target){ cur=target; clearInterval(timer); }
+        el.textContent = cur;
+      }, 25);
+      counterObserver.unobserve(el);
+    }
+  });
+},{threshold:0.5});
+counters.forEach(c=>counterObserver.observe(c));
+
+/* ---------- contact form (Formspree) ---------- */
+const contactForm = document.getElementById('contactForm');
+contactForm.addEventListener('submit', function(e){
+  e.preventDefault();
+  const form = this;
+  const submitBtn = form.querySelector('button[type="submit"]');
+  const originalText = submitBtn.innerHTML;
+  submitBtn.disabled = true;
+  submitBtn.innerHTML = 'Sending...';
+
+  fetch(form.action, {
+    method: 'POST',
+    body: new FormData(form),
+    headers: { 'Accept': 'application/json' }
+  }).then(response => {
+    if(response.ok){
+      document.getElementById('formSuccess').style.display='block';
+      form.reset();
+    } else {
+      alert('Something went wrong. Please try again or contact us directly on WhatsApp.');
+    }
+  }).catch(() => {
+    alert('Something went wrong. Please try again or contact us directly on WhatsApp.');
+  }).finally(() => {
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = originalText;
+  });
+});
+
+/* ---------- particle network background ---------- */
+const canvas = document.getElementById('bg-canvas');
+const ctx = canvas.getContext('2d');
+let W,H,particles=[];
+function resize(){
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = document.body.scrollHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+const PCOUNT = window.innerWidth<768 ? 40 : 90;
+for(let i=0;i<PCOUNT;i++){
+  particles.push({
+    x:Math.random()*W, y:Math.random()*H,
+    vx:(Math.random()-0.5)*0.4, vy:(Math.random()-0.5)*0.4,
+    r:Math.random()*1.6+0.6
+  });
+}
+function drawParticles(){
+  ctx.clearRect(0,0,W,H);
+  for(let i=0;i<particles.length;i++){
+    const p = particles[i];
+    p.x+=p.vx; p.y+=p.vy;
+    if(p.x<0||p.x>W)p.vx*=-1;
+    if(p.y<0||p.y>H)p.vy*=-1;
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle='rgba(182,255,46,0.55)';
+    ctx.fill();
+    for(let j=i+1;j<particles.length;j++){
+      const q = particles[j];
+      const dx=p.x-q.x, dy=p.y-q.y;
+      const dist = Math.sqrt(dx*dx+dy*dy);
+      if(dist<130){
+        ctx.beginPath();
+        ctx.moveTo(p.x,p.y); ctx.lineTo(q.x,q.y);
+        ctx.strokeStyle = 'rgba(182,255,46,'+(0.14*(1-dist/130))+')';
+        ctx.lineWidth=1;
+        ctx.stroke();
+      }
+    }
+  }
+  requestAnimationFrame(drawParticles);
+}
+drawParticles();
+setInterval(resize, 2000); // keep canvas height synced with page growth
+</script>
+</body>
+</html>
+
